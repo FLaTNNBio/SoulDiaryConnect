@@ -3,6 +3,9 @@
 **SoulDiaryConnect** is an AI-powered system designed to support patients in their **psychotherapeutic journey** by enabling journaling with **personalized AI feedback**, while keeping the **therapist connected and in control**. 
 The platform allows patients to **log daily experiences**, receive **AI-generated motivational and clinical feedback**, and stay in touch with their physician.
 The AI used is [Mistral 7B OpenOrca](https://huggingface.co/mistralai/Mistral-7B-v0.1).
+<p align="center">
+  <img src="https://github.com/FLaTNNBio/SoulDiaryConnect/blob/e029cedbdc8da70dbec7e5fe89edf20dfc26bb97/media/logo-blu.png" width="250" alt="Logo SoulDiaryConnect">
+</p>
 
 ---
 
