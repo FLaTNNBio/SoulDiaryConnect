@@ -37,7 +37,7 @@ git clone https://github.com/FLaTNNBio/SoulDiaryConnect.git
 cd SoulDiaryConnect
 ```
 
-### **2. Set up a virtual environment
+### **2. Set up a virtual environment**
 ```sh
 python3 -m venv venv
 source venv/bin/activate  # on Windows: venv\Scripts\activate
