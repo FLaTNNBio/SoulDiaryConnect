@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Medico</title>
+    <style>
+        body {
+            font-family: 'Verdana', sans-serif;
+            background-color: #e3f2fd;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1565c0;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            height: 50px;
+        }
+        .header h1 {
+            font-size: 22px;
+            margin: 0;
+        }
+        .separator {
+            border-top: 2px solid #1565c0;
+            margin: 8px 0;
+        }
+        .logout-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-right: 60px;
+            transition: 0.3s;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+        .personalize-button {
+            background-color: #FFFFFF;
+            color: #1565c0;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-right: 20px;
+            transition: 0.3s;
+        }
+        .personalize-button:hover {
+            background-color: #e3f2fd;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: calc(100vh - 50px);
+            overflow: hidden;
+            margin-top: 50px;
+        }
+        .col-left {
+            width: 25%;
+            background-color: #FFF;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        .col-left ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .col-left li {
+            margin-bottom: 15px;
+        }
+        .col-left button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #e3f2fd;
+            color: #1565c0;
+            font-weight: bold;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .col-left button:hover {
+            background: #bbdefb;
+        }
+        .col-left button.selected {
+            background: #1565c0;
+            color: white;
+        }
+        .col-right {
+            width: 75%;
+            padding: 20px;
+            background-color: #FAFAFA;
+            overflow-y: auto;
+            box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .notes ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .notes li {
+            background: #bbdefb;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            border-left: 4px solid #1565c0;
+            padding-left: 10px;
+        }
+        .notes li p {
+            margin: 5px 0;
+        }
+        textarea {
+            width: 95%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #1565c0;
+            font-size: 14px;
+            background: #FFF;
+            transition: 0.3s ease-in-out;
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
+            font-family: 'Verdana', sans-serif;
+            resize: none;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #0d47a1;
+            box-shadow: inset 2px 2px 8px rgba(13, 71, 161, 0.2);
+            background: #E3F3F5;
+        }
+        button {
+            background-color: #1565c0;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0d47a1;
+        }
+        .patient-data {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #1565c0;
+            position: sticky;
+            top: 0px;
+            z-index: 900;
+        }
+    </style>
+    <script>
+        function selectPatient(selectedButton) {
+            const buttons = document.querySelectorAll('.col-left button');
+            buttons.forEach(button => button.classList.remove('selected'));
+            selectedButton.classList.add('selected');
+        }
+    </script>
+</head>
+<body>
+    <div class="header">
+        <img src="/media/logo.png" alt="SoulDiaryConnect" height="60px" style="margin-left: 30px;">
+        <h1>Benvenuto, Dr. {{ medico.nome }} {{ medico.cognome }}</h1>
+        <div>
+            <a href="{% url 'personalizza_generazione' %}" class="personalize-button">Personalizza Generazione<img src="/media/settings.png" height="17px" style="margin-left:2px;"></a>
+            <a href="{% url 'logout' %}" class="logout-button">Logout<img src="/media/logout_white.png" height="17px" style="margin-left:2px;"></a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="col-left">
+            <h2>Lista dei Pazienti</h2>
+            <ul>
+                {% for paziente in pazienti %}
+                    <li>
+                        <button onclick="selectPatient(this); location.href='?paziente_id={{ paziente.codice_fiscale }}'"
+                            class="{% if paziente_selezionato.codice_fiscale == paziente.codice_fiscale %}selected{% endif %}">
+                            {{ paziente.nome }} {{ paziente.cognome }}
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-right">
+            {% if paziente_selezionato %}
+                <div class="patient-data">
+                    <h2>Dati del Paziente</h2>
+                    <p><strong>Nome Cognome:</strong> {{ paziente_selezionato.nome }} {{ paziente_selezionato.cognome }}</p>
+                    <p><strong>Codice Fiscale:</strong> {{ paziente_selezionato.codice_fiscale }} | <strong>Data di Nascita:</strong> {{ paziente_selezionato.data_di_nascita }}</p>
+                </div>
+                <div class="notes">
+                    <h2>Note Diario</h2>
+                    <ul>
+                        {% for nota in note_diario %}
+                            <li>
+                                <p><strong>Data:</strong> {{ nota.data_nota }}</p>
+                                <p><strong>Nota:</strong> {{ nota.testo_paziente }}</p>
+                                <div class='separator'></div>
+                                <p><strong>Supporto:</strong> {{ nota.testo_supporto }}</p>
+                                <div class='separator'></div>
+                                <p><strong>Testo per il medico:</strong> {{ nota.testo_clico }}</p>
+                                <form method="POST" action="{% url 'modifica_testo_medico' nota.id %}">
+                                    {% csrf_token %}
+                                    <label><strong>Cosa ne pensa il medico:</strong></label><br>
+                                    <textarea name="testo_medico" rows="4">{{ nota.testo_medico }}</textarea><br>
+                                    <button type="submit">Salva</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <p>Seleziona un paziente dalla lista per vedere i dettagli e le sue note.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

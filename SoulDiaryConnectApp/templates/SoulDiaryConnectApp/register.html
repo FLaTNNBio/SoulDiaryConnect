@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrazione</title>
+    <style>
+        body {
+            font-family: Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e3f2fd;
+        }
+        .header {
+            width: 100%;
+            background-color: #1565c0;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 20px;
+            text-decoration: none;
+            box-sizing: border-box; /* Evita overflow */
+        }
+        .header a {
+            text-decoration: none;
+            cursor: pointer;
+            color: white;
+        }
+        .header a:hover {
+            text-decoration: none;
+            cursor: pointer;
+            color: white;
+        }
+        .registration-container {
+            margin: 100px auto 0; /* Spazio per evitare sovrapposizione con header */
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #1565c0;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        label {
+            font-weight: bold;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+        select, input[type="text"], input[type="email"], input[type="password"], input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background-color: #1565c0;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 22px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+        p {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        a {
+            color: #1565c0;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        function toggleFields() {
+            const userType = document.getElementById('user_type').value;
+            const commonFields = document.getElementById('common_fields');
+            const medicoFields = document.getElementById('medico_fields');
+            const pazienteFields = document.getElementById('paziente_fields');
+            const registra = document.getElementById('register_button');
+
+            registra.style.display = userType ? 'block' : 'none';
+            commonFields.style.display = userType ? 'block' : 'none';
+            medicoFields.style.display = userType === 'medico' ? 'block' : 'none';
+            pazienteFields.style.display = userType === 'paziente' ? 'block' : 'none';
+        }
+    </script>
+</head>
+<body>
+    <!-- Header con link per navigazione -->
+    <div class="header">
+        <a href="{% url 'home' %}" ><img src="/media/logo.png" alt="SoulDiaryConnect" height="60px" style="margin-left: 30px;"></a>
+    </div>
+    <br><br><br>
+    <div class="registration-container">
+        <h1>Registrazione</h1>
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- Selezione tipo utente -->
+            <label>Tipo di utente:</label>
+            <select name="user_type" id="user_type" onchange="toggleFields()" required>
+                <option value="">-- Seleziona --</option>
+                <option value="medico">Medico</option>
+                <option value="paziente">Paziente</option>
+            </select>
+
+            <!-- Campi comuni -->
+            <div id="common_fields" class="hidden">
+                <label>Nome</label>
+                <input type="text" name="nome" placeholder="Inserisci il tuo nome">
+                <label>Cognome</label>
+                <input type="text" name="cognome" placeholder="Inserisci il tuo cognome">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="Inserisci la tua email">
+                <label>Password</label>
+                <input type="password" name="passwd" placeholder="Inserisci la tua password">
+            </div>
+
+            <!-- Campi specifici per il medico -->
+            <div id="medico_fields" class="hidden">
+                <label>Codice identificativo</label>
+                <input type="text" name="codice_identificativo" placeholder="Inserisci il codice identificativo">
+                <label>Indirizzo studio</label>
+                <input type="text" name="indirizzo_studio" placeholder="Inserisci l'indirizzo dello studio">
+                <label>Numero civico</label>
+                <input type="text" name="numero_civico" placeholder="Inserisci il numero civico">
+                <label>Città</label>
+                <input type="text" name="citta" placeholder="Inserisci la città">
+                <label>Numero telefono studio</label>
+                <input type="text" name="numero_telefono_studio" placeholder="Inserisci il numero di telefono dello studio">
+                <label>Numero telefono cellulare</label>
+                <input type="text" name="numero_telefono_cellulare" placeholder="Inserisci il numero di telefono cellulare">
+            </div>
+
+            <!-- Campi specifici per il paziente -->
+            <div id="paziente_fields" class="hidden">
+                <label>Codice fiscale</label>
+                <input type="text" name="codice_fiscale" placeholder="Inserisci il codice fiscale">
+                <label>Data di nascita</label>
+                <input type="date" name="data_di_nascita">
+                <label>Medico di riferimento (codice identificativo)</label>
+                <input type="text" name="med" placeholder="Inserisci il codice identificativo del medico">
+            </div>
+
+            <button type="submit" class="submit-button hidden" id="register_button">Registrati <img src="/media/register.png" height="24px"></button>
+        </form>
+        <p>Sei già registrato? Effettua il <a href="{% url 'login' %}">login</a></p>
+    </div>
+</body>
+</html>

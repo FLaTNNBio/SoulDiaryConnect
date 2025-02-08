@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Personalizza Generazione</title>
+    <style>
+        body {
+            font-family: Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e3f2fd;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1565c0;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            height: 50px;
+        }
+        .logout-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-right: 40px;
+            transition: 0.3s;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+        .personalize-button {
+            background-color: #FFFFFF;
+            color: #1565c0;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-right: 20px;
+            transition: 0.3s;
+        }
+        .personalize-button:hover {
+            background-color: #e3f2fd;
+        }
+        .header h1 {
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .top-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .top-buttons .back, .top-buttons button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .top-buttons .back:hover, .top-buttons button:hover {
+            background-color: #0056b3;
+        }
+        form {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 120px;
+        }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .flex-item {
+            width: 48%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #1565c0;
+            color: white;
+        }
+        .remove-button {
+            color: white;
+            background-color: red;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .remove-button:hover {
+            background-color: #c82333;
+        }
+        .add-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .add-button:hover {
+            background-color: #218838;
+        }
+        .submit-button {
+            background-color: #1565c0;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .submit-button:hover {
+            background-color: #0f4a8d;
+        }
+        .hidden {
+            display: none;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .input {
+            padding: 5px 10px;
+            width: 100%;
+            outline: none;
+            background: #FFFFFF;
+            color: #000000;
+            border: 0px solid #C4D1EB;
+            border-radius: 5px;
+            box-shadow: 3px 3px 2px 0px #E2E2E2;
+            transition: .3s ease;
+            font-family: Verdana, sans-serif;
+            width: 90%;
+
+        }
+
+        .input:focus {
+            background: #FCFCFC;
+            border: 0px solid #5A7EC7;
+            border-radius: 10px;
+        }
+
+        .input::placeholder {
+            color: #DDDDDD;
+        }
+
+    </style>
+    <script>
+        // Mostra o nasconde la tabella in base alla selezione del tipo di nota
+        function toggleParametriTable() {
+            const isStrutturato = document.querySelector('input[name="tipo_nota"]:checked').value === 'strutturato';
+            const parametriTable = document.getElementById('parametriContainer');
+            parametriTable.style.display = isStrutturato ? 'block' : 'none';
+            const testo = document.getElementById('testoContainer');
+            testo.style.display = isStrutturato ? 'none' : 'block';
+        }
+
+        // Funzione per aggiungere una nuova riga
+        function aggiungiRiga() {
+            const table = document.getElementById('parametriTable');
+            const row = table.insertRow();
+            const tipoCell = row.insertCell(0);
+            const testoCell = row.insertCell(1);
+            const removeCell = row.insertCell(2);
+
+
+            tipoCell.style.border = "0px";
+            testoCell.style.border = "0px";
+            removeCell.style.border = "0px";
+
+            tipoCell.innerHTML = '<input class="input" type="text" name="tipo_parametri" >';
+            testoCell.innerHTML = '<textarea class="input" name="testo_parametri" rows="4" ></textarea>';
+            removeCell.innerHTML = '<button type="button" class="remove-button" onclick="rimuoviRiga(this)">Rimuovi</button>';
+        }
+
+        // Funzione per rimuovere una riga
+        function rimuoviRiga(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        // Assicurati che la tabella sia correttamente mostrata o nascosta al caricamento della pagina
+        window.onload = toggleParametriTable;
+    </script>
+</head>
+<body>
+    <div class="header">
+        <img src="/media/logo.png" alt="SoulDiaryConnect" height="60px" style="margin-left: 30px;">
+        <h1>Personalizza Generazione</h1>
+        <div class="top-buttons">
+            <a href="{% url 'medico_home' %}" class="personalize-button">Torna Indietro</a>
+            <a href="{% url 'logout' %}" class="logout-button">Logout <img src="/media/logout_white.png" height="17px" style="margin-left:2px;"></a>
+        </div>
+    </div>
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="flex-container">
+            <!-- Tipo di Nota -->
+            <div class="flex-item">
+                <h2>Tipo di Nota</h2>
+                <label>
+                    <input type="radio" name="tipo_nota" value="strutturato" {% if medico.tipo_nota %}checked{% endif %} onchange="toggleParametriTable()">
+                    Commento Strutturato
+                </label>
+                <label>
+                    <input type="radio" name="tipo_nota" value="non_strutturato" {% if medico.tipo_nota is not None and not medico.tipo_nota %}checked{% endif %} onchange="toggleParametriTable()">
+                    Commento Non Strutturato
+                </label>
+            </div>
+
+            <!-- Lunghezza della Nota -->
+            <div class="flex-item">
+                <h2>Lunghezza della Nota</h2>
+                <label>
+                    <input type="radio" name="lunghezza_nota" value="lungo" {% if medico.lunghezza_nota %}checked{% endif %}>
+                    Commento Lungo
+                </label>
+                <label>
+                    <input type="radio" name="lunghezza_nota" value="breve" {% if medico.lunghezza_nota is not None and not medico.lunghezza_nota %}checked{% endif %}>
+                    Commento Breve
+                </label>
+            </div>
+        </div>
+
+        <div id="testoContainer" class="hidden">
+            <h3 style="color : red;">Attenzione! Scegliendo questa opzione il commento generato potrebbe risultare meno affidabile</h3>
+        </div>
+
+        <!-- Contenitore per la tabella dei parametri personalizzati -->
+        <div id="parametriContainer" class="hidden">
+            <h2>Parametri Personalizzati</h2>
+            <h3>Rispondi in modo parametrizzato al seguente testo:</h3>
+            <h3><i>Today I failed my exam and feel like giving up.</i></h3>
+            <table id="parametriTable" style="border: 0px;">
+                <tr style="border: 0px;">
+                    <th style="border: 0px;">Tipo Parametro</th>
+                    <th style="border: 0px;">Testo Parametro</th>
+                    <th style="border: 0px;"> </th>
+                </tr>
+                {% for tipo, testo in tipo_parametri %}
+                    <tr>
+                        <td style="border: 0px;"><input class="input" type="text" name="tipo_parametri" value="{{ tipo }}" style="width: 90%;"></td>
+                        <td style="border: 0px;"><textarea class="input" name="testo_parametri" rows="4" style="width: 90%; font-family: Verdana, sans-serif;">{{ testo }}</textarea></td>
+                        <td style="border: 0px;"><button type="button" class="remove-button" onclick="rimuoviRiga(this)">Rimuovi</button></td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <button type="button" class="add-button" onclick="aggiungiRiga()">Aggiungi Parametro</button>
+        </div>
+
+        <br>
+        <button type="submit" class="submit-button">Conferma</button>
+    </form>
+</body>
+</html>

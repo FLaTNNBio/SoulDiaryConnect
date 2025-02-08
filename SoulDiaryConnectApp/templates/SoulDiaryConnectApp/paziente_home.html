@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Paziente</title>
+    <style>
+        body {
+            font-family: 'Verdana', sans-serif;
+            background-color: #e3f2fd;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1565c0;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            height: 50px;
+        }
+        .header h1 {
+            font-size: 22px;
+            margin: 0;
+        }
+        .logout-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            margin-right: 40px;
+            text-decoration: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+        h2 {
+            color: #1565c0;
+            margin-top: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: calc(100vh - 50px);
+            overflow: hidden;
+            margin-top: 50px;
+        }
+        .col-left {
+            width: 30%;
+            background-color: #FFF;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        .col-right {
+            width: 70%;
+            padding: 20px;
+            background-color: #FAFAFA;
+            overflow-y: auto;
+            box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .notes ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .notes li {
+            background: #bbdefb;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            border-left: 4px solid #1565c0;
+            padding-left: 10px;
+        }
+        .notes li p {
+            margin: 5px 0;
+        }
+        .separator {
+            border-top: 2px solid #1565c0;
+            margin: 8px 0;
+        }
+        textarea {
+            width: 95%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #1565c0;
+            font-size: 14px;
+            background: #FFF;
+            transition: 0.3s ease-in-out;
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
+            font-family: 'Arial', sans-serif;
+            resize: none;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #0d47a1;
+            box-shadow: inset 2px 2px 8px rgba(13, 71, 161, 0.2);
+            background: #E3F3F5;
+        }
+        button {
+            background-color: #1565c0;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0d47a1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="/media/logo.png" alt="SoulDiaryConnect" height="60px" style="margin-left: 30px;">
+        <h1>Benvenuto, {{ paziente.nome }} {{ paziente.cognome }}</h1>
+        <a href="{% url 'logout' %}" class="logout-button">Logout<img src="/media/logout_white.png" height="17px" style="margin-left:2px;"></a>
+    </div>
+    <div class="container">
+        <div class="col-left">
+            <h2>Scheda del tuo medico <img src="/media/stethoscope.png" height="20px"></h2>
+            <p><strong>Nome:</strong> {{ medico.nome }} {{ medico.cognome }}</p>
+            <p><strong>Indirizzo:</strong> {{ medico.indirizzo_studio }}, {{ medico.numero_civico }} - {{ medico.citta }}</p>
+            <p><strong>Email:</strong> {{ medico.email }}</p>
+            <p><strong>Numero Studio:</strong> {{ medico.numero_telefono_studio }}</p>
+            <p><strong>Numero Cellulare:</strong> {{ medico.numero_telefono_cellulare }}</p>
+            <div class='separator'></div>
+            <h2>Aggiungi una nuova nota</h2>
+            <textarea placeholder="Scrivi la tua nota..." rows="10"></textarea>
+            <button>Aggiungi Nota</button>
+        </div>
+        <div class="col-right">
+            <div class="notes">
+                <h2>Le tue note diario<img src="/media/writing.png" height="22px" style="margin-left:2px;"></h2>
+                <ul>
+                    {% for nota in note_diario %}
+                        <li>
+                            <p><strong>Data:</strong> {{ nota.data_nota }}</p>
+                            <p><strong>Nota:</strong> {{ nota.testo_paziente }}</p>
+                            <div class='separator'></div>
+                            {% if nota.testo_supporto %}
+                                <p><strong>Supporto:</strong> {{ nota.testo_supporto }}</p>
+                            {% endif %}
+                            {% if nota.testo_medico or nota.testo_medico == "None" %}
+                                <div class='separator'></div>
+                                <p><strong>Cosa ne pensa il medico:</strong> {{ nota.testo_medico }}</p>
+                            {% endif %}
+                        </li>
+                    {% empty %}
+                        <p>Non ci sono note disponibili.</p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

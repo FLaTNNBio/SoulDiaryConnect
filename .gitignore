@@ -1,0 +1,44 @@
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.swo
+*.DS_Store
+
+# Ignore system-specific metadata (Windows)
+Thumbs.db
+desktop.ini
+
+# Ignore Zone.Identifier files (Windows security metadata)
+*Zone.Identifier
+
+# Ignore Quantized Model
+*.gguf
+
+# Ignore virtual environments
+venv/
+env/
+soul/
+
+# Ignore logs
+logs/
+*.log
+
+# Ignore migrations compiled files
+*/migrations/*.pyc
+*/migrations/*.pyo
+*/migrations/__pycache__/
+
+
+# Ignore compiled cache files
+*.cache
+*.mo
+*.pot
+
+# Ignore VSCode settings
+.vscode/
+
+# Ignore JetBrains IDE (PyCharm) settings
+.idea/

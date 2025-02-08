@@ -1,0 +1,14 @@
+asgiref==3.8.1
+diskcache==5.6.3
+Django==5.1.5
+django-stubs==5.1.2
+django-stubs-ext==5.1.2
+Jinja2==3.1.5
+llama_cpp_python==0.3.6
+MarkupSafe==3.0.2
+numpy==2.2.2
+psycopg2==2.9.10
+psycopg2-binary==2.9.10
+sqlparse==0.5.3
+types-PyYAML==6.0.12.20241230
+typing_extensions==4.12.2

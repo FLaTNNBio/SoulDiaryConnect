@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        .header {
+            width: 100%;
+            background-color: #1565c0;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 20px;
+            text-decoration: none;
+            box-sizing: border-box; /* Evita overflow */
+        }
+        .header a {
+            text-decoration: none;
+            cursor: pointer;
+            color: white;
+        }
+        .header a:hover {
+            text-decoration: none;
+            cursor: pointer;
+            color: white;
+        }
+        body {
+            font-family: Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e3f2fd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #1565c0;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        label {
+            font-weight: bold;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+        input[type="email"],
+        input[type="password"] {
+            font-family: Verdana, sans-serif;
+            width: 94.5%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background-color: #1565c0;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0f4a8d;
+        }
+        p {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        a {
+            color: #1565c0;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #0f4a8d;
+        }
+        .personalize-button {
+            background-color: #FFFFFF;
+            color: #1565c0;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-right: 20px;
+            transition: 0.3s;
+        }
+        .personalize-button:hover {
+            background-color: #e3f2fd;
+        }
+    </style>
+</head>
+<body>
+ <!-- Header con link per navigazione -->
+    <div class="header">
+        <a href="{% url 'home' %}" ><img src="/media/logo.png" alt="SoulDiaryConnect" height="60px" style="margin-left: 30px;"></a>
+    </div>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Inserisci la tua email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Inserisci la tua password" required>
+
+            <button type="submit">Login<img src="/media/login.png" height="18px" style="margin-left:2px;"></button>
+        </form>
+
+        <p>Non hai un account? <a href="{% url 'register' %}">Registrati</a></p>
+    </div>
+</body>
+</html>
