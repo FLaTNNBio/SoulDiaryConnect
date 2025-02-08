@@ -50,6 +50,7 @@ pip install -r requirements.txt
 
 ## **4. Configure the database**
 
+Install PostgreSQL following the [official guideline](https://www.postgresql.org/download/).
 To exectute the queries:
 ```sh
 python manage.py dbshell
